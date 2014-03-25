@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:filters="flash.filters.*"
+	xmlns:rs="com.rubenswieringa.book.*"
+	layout="absolute" 
+	backgroundColor="#887157" backgroundGradientColors="[#6e6e6e,#333333]"
+	creationComplete="onCreationComplete()" 
+	xmlns:video="com.views.video.*">
+	
+	<mx:Style source="assets/style/book.css" />
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			import mx.effects.Fade;
+			import com.rubenswieringa.book.*;
+			private var lastPage:Page;
+
+			private function onCreationComplete ():void {
+				Security.allowDomain("*");
+				Security.loadPolicyFile('http://www.cyianite.net84.net/crossdomain.xml');
+				
+				myBook.addEventListener(BookEvent.PAGE_TORN, onPageTorn);				
+				myBook.addEventListener(BookEvent.PAGE_TURNED, onPageTurned);
+				myBook.addEventListener(BookEvent.PAGEFLIP_STARTED, onPageStartedFlip);
+				videoPG3.stop();
+				videoPG2.stop();
+
+			}
+			private function onPageTurned(e:BookEvent):void
+			{
+ 				switch(e.page)
+				{
+					case page1:
+						videoPG2.play();
+						
+						break;					
+					case page2:
+						videoPG2.stop();
+						break;
+					case page3:
+						videoPG2.stop();
+						videoPG3.play();
+						break;
+					case page4:
+						videoPG3.stop();
+						videoPG2.play();
+						break;
+					case page4:
+						videoPG3.stop();
+						break;
+					case page6:
+						videoPG3.play();
+						break;
+				}
+				lastPage = e.page;
+
+			}			
+			private function onPageStartedFlip(e:BookEvent):void
+			{
+/* 				switch(e.page)
+				{
+					case page1:
+						videoPG2.show();
+						break;
+					case page2:
+						videoPG3.show();
+						break;
+				} */
+			}
+			private function onPageTorn (e:BookEvent):void {
+				if (myBook.pages.getItemIndex(page1) == -1){
+					//tearBtnVisible = true;
+					
+				}
+				Alert.show('onPageTorn==' + e.currentTarget );
+				
+			}
+
+			
+		]]>
+	</mx:Script>
+	
+	
+	<!-- BOOK STARTS HERE -->
+	
+	<rs:Book id="myBook" x="{Math.round(Application.application.width/2-400)}" y="50" width="800" height="530" 
+		openAt="0" autoFlipDuration="600" easing="0.7" regionSize="150" 
+		sideFlip="true" hardCover="false" hover="true" snap="false" flipOnClick="true">
+		
+	<!-- PAGE-1 -->
+		<rs:Page id="page1" >
+			<mx:Image source="@Embed('assets/img2/page-1-a.png')" />
+		</rs:Page>	
+		<rs:Page id="page2" ><mx:Image source="@Embed('assets/img2/page-3-a.png')" /></rs:Page>	
+
+		
+	<!-- PAGE-2 -->
+		<rs:Page id="page3" >
+			<mx:Image source="@Embed('assets/img2/page-2-a.png')" />
+			<mx:VBox left="33" right="33" top="33" bottom="33" verticalGap="0" verticalScrollPolicy="off">
+				<video:CyFlvPlayback id="videoPG2" url="http://www.cyianite.net84.net/mc/Iron-Man.flv" />
+				
+			</mx:VBox>
+		</rs:Page>
+		<rs:Page id="page4" ><mx:Image source="@Embed('assets/img2/page-3-a.png')" /></rs:Page>
+	
+	<!-- PAGE-3 -->	
+		<rs:Page id="page5" >
+			<mx:Image source="@Embed('assets/img2/page-2-a.png')" />
+			<mx:VBox left="33" right="33" top="33" bottom="33" verticalGap="0" horizontalAlign="right">
+				<video:CyFlvPlayback id="videoPG3" url="http://www.cyianite.net84.net/mc/Iron-Man.flv"  />
+<!--			<mx:LinkButton styleName="index" label="transparency" click="myBook.gotoPage(transparencyPage)" />
+				<mx:LinkButton styleName="index" label="tearing" click="myBook.gotoPage(beforeTearPage)" />
+				<mx:LinkButton styleName="index" label="gotoPage()" click="myBook.gotoPage(gotoPage)" />
+				<mx:LinkButton styleName="index" label="liveBitmapping" click="myBook.gotoPage(animatedPage)" />
+				<mx:LinkButton styleName="index" label="hard-back" click="myBook.gotoPage(hardPage1)" />
+				<mx:LinkButton styleName="index" label="events" click="myBook.gotoPage(eventsPage)" />-->
+			</mx:VBox>
+		</rs:Page>
+		<rs:Page id="page6" ><mx:Image source="@Embed('assets/img2/page-3-a.png')" /></rs:Page>
+		
+	</rs:Book>
+	
+	<!-- BOOK ENDS HERE -->
+	
+	
+</mx:Application>

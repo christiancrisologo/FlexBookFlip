@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" height="550" left="33" right="33" top="33" bottom="33" 
+		verticalGap="3" verticalScrollPolicy="off" width="100%" horizontalAlign="left">
+<mx:Script>
+	<![CDATA[
+		[Bindable] public var title:String = "";
+		[Bindable] public var url:String = "";
+		[Bindable] public var imageSrc:String = "";
+		[Bindable] public var client:String = "";
+		[Bindable] public var date:String = "";
+		[Bindable] public var tech:String = "";
+		
+		
+		public function set contentData(values:Object):void
+		{
+			if(values)
+			{
+				title 		= values.project;
+				url 		= values.url;
+				imageSrc = values.image;
+				client		= values.client;
+				date		= values.date;
+				tech	 	= values.tech;
+			}
+		} 
+		private function clickHdlr():void
+		{
+			navigateToURL(new URLRequest(url), '_blank')
+		}
+	]]>
+</mx:Script>
+	
+		<mx:Label text="{title}" fontSize="16" fontWeight="bold" color="0xffffff" />
+		<mx:Image source="{imageSrc}" />
+		<mx:HRule width="100%" />
+		<mx:HBox  width="100%"  >
+			<mx:Label text="Date Created:" width="30%"/>
+			<mx:Label text="{date}" />
+		</mx:HBox>
+		<mx:HBox  width="100%" >
+			<mx:Label text="Client:" width="30%"/>
+			<mx:Label text="{client}" />
+		</mx:HBox>
+		<mx:HBox  width="100%" >
+			<mx:Label text="Technology:" width="30%"/>
+			<mx:Label text="{tech}" />
+		</mx:HBox>
+		<mx:HBox  width="100%" >
+			<mx:Label text="URL:" width="30%"/>
+			<mx:LinkButton label="{url}" buttonMode="true" click="clickHdlr()" />
+		</mx:HBox>    
+		
+
+</mx:VBox>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:filters="flash.filters.*"
+	xmlns:rs="com.rubenswieringa.book.*"
+	layout="absolute" 
+	backgroundColor="0x081701" backgroundGradientColors="[0x000000,0x081701]"
+	creationComplete="onCreationComplete()" 
+	xmlns:video="com.views.video.*"
+	xmlns:comp="comp.*">
+	
+	<mx:Style source="assets/style/book.css" />
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ListEvent;
+			import mx.events.ItemClickEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			
+			import mx.effects.Fade;
+			import com.rubenswieringa.book.*;
+			private var lastPage:Page;
+
+			private function onCreationComplete ():void {
+				Security.allowDomain("*");
+				//Security.loadPolicyFile('http://www.cyianite.net84.net/crossdomain.xml');
+				
+				myBook.addEventListener(BookEvent.PAGE_TORN, onPageTorn);				
+				myBook.addEventListener(BookEvent.PAGE_TURNED, onPageTurned);
+				myBook.addEventListener(BookEvent.PAGEFLIP_STARTED, onPageStartedFlip);
+
+			}
+			private function onPageTurned(e:BookEvent):void
+			{
+ 				switch(e.page)
+				{
+					case page1:
+						//videoPG2.play();
+						
+						break;					
+					case page2:
+						//videoPG2.stop();
+						break;
+					case page3:
+						//videoPG2.stop();
+						//videoPG3.play();
+						break;
+					case page4:
+						//videoPG3.stop();
+						//videoPG2.play();
+						break;
+					case page4:
+						//videoPG3.stop();
+						break;
+					case page6:
+						//videoPG3.play();
+						break;
+				}
+				lastPage = e.page;
+
+			}			
+			private function onPageStartedFlip(e:BookEvent):void
+			{
+/* 				switch(e.page)
+				{
+					case page1:
+						videoPG2.show();
+						break;
+					case page2:
+						videoPG3.show();
+						break;
+				} */
+			}
+			private function onPageTorn (e:BookEvent):void {
+				if (myBook.pages.getItemIndex(page1) == -1){
+					//tearBtnVisible = true;
+					
+				}
+				//Alert.show('onPageTorn==' + e.currentTarget );
+				
+			}
+
+			private  var FRONT_PG:String 	= "assets/img2/cy9-page-1-a.png";
+			private var BODY_BG_PG:String 	= "assets/img2/cy9-page-1-b.png";
+			private var BACK_PG:String 		= "assets/img2/cy9-page-3-a.png";
+			
+			[Bindable]
+			private var dataList:ArrayCollection = 
+						new ArrayCollection([
+								
+								{project:'David Hanscom', date:'Nov-2011',client:'David Hanscom',url:'http://www.davidhanscom.com',image: 'assets/img2/port/davidhanscom-001.jpg'},
+								{project:'Y Entertainment', date:'Nov-2011',client:'David Hanscom',url:'http://www.yentertainmentdjs.com/',image: 'assets/img2/port/yent-001.png'},
+								{project:'Your Event Answer', date:'Nov-2011',client:'David Hanscom',url:'http://www.youreventanswer.com/',image: 'assets/img2/port/yea-001.png'},
+								{project:'Light my Party', date:'Nov-2011',client:'David Hanscom',url:'http://www.lightupmyparty.com/',image: 'assets/img2/port/lemp-001.png'},
+								{project:'Travamat', date:'Nov-2011',client:'Jovel Cipriano',url:'http://travamat.com/',image: 'assets/img2/port/travamat-001.png'},
+								{project:'Magic Melt', date:'Nov-2011',client:'Jovel Cipriano',url:'http://magicmelt.com/blog/',image: 'assets/img2/port/magic-melt-001.png'},
+								{project:'Regained Self Confidence', date:'Nov-2011',client:'Maureen',url:'http://regainedselfconfidence.com/',image: 'assets/img2/port/self-con-001.png'}
+								
+								]);
+			
+			
+			private function tableClick(e:ListEvent):void
+			{
+				myBook.gotoPage( (2+e.rowIndex) );
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<!-- BOOK STARTS HERE -->
+	
+	<rs:Book id="myBook" x="{Math.round(Application.application.width/2-500)}" y="10" width="1000" height="580" 
+		openAt="0" autoFlipDuration="600" easing="0.7" regionSize="150" 
+		sideFlip="true" hardCover="false" hover="true" snap="false" flipOnClick="true">
+		
+	<!-- PAGE-1 -->
+		<rs:Page id="page1" >
+			<mx:Image source="{FRONT_PG}" />
+		</rs:Page>
+		<rs:Page id="page2" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<mx:VBox left="33" right="33" top="33" bottom="33" verticalGap="0" horizontalAlign="right">
+				<mx:Label text="Table Of Contents" fontSize="16" fontWeight="bold" color="0xffffff" />
+				<mx:Spacer height="20" />
+				<mx:DataGrid width="100%" height="70%" dataProvider="{dataList}" itemClick="tableClick(event)" >
+					<mx:columns>
+						<mx:DataGridColumn headerText="Project Name" dataField="project" />
+<!--						<mx:DataGridColumn headerText="Date" dataField="date" />
+							<mx:DataGridColumn headerText="URL" dataField="url" />-->
+							<mx:DataGridColumn headerText="Client" dataField="client" />						
+<!--						<mx:DataGridColumn headerText="Technology" dataField="technology" />-->
+					</mx:columns>
+				</mx:DataGrid>
+			</mx:VBox>
+		</rs:Page>	
+
+		
+	<!-- PAGE-2 -->
+		<rs:Page id="page3" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(0)}" />
+		</rs:Page>
+		<rs:Page id="page4" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(1)}"  horizontalAlign="right" />
+		</rs:Page>
+		<rs:Page id="page5" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(2)}" />
+		</rs:Page>
+		<rs:Page id="page6" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(3)}" horizontalAlign="right"/>
+		</rs:Page>
+		<rs:Page id="page7" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(4)}" />
+		</rs:Page>
+		<rs:Page id="page8" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(5)}" horizontalAlign="right"/>
+		</rs:Page>
+		<rs:Page id="page9" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(6)}" />
+		</rs:Page>
+<!--		<rs:Page id="page10" >
+			<mx:Image source="{BODY_BG_PG}" />
+			<comp:PageBox contentData="{dataList.getItemAt(5)}" />
+		</rs:Page>-->
+		<rs:Page ><mx:Image source="{BACK_PG}" /></rs:Page>
+		
+	</rs:Book>
+	
+	<!-- BOOK ENDS HERE -->
+	
+	
+</mx:Application>

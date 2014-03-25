@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox name="CyFlvPlayback"
+        xmlns:mx="http://www.adobe.com/2006/mxml"
+        verticalAlign="middle"
+        backgroundColor="white" xmlns:video="fl.video.*" creationComplete="init()"
+       >
+
+    <mx:Script>
+        <![CDATA[
+        	[Bindable] public var url:String = '';//'http://www.helpexamples.com/flash/video/caption_video.flv';
+        	
+            private function flvPlayback_autoLayout(evt:Event):void {
+                videoHolder.width = flvPlayback.width;
+                videoHolder.height = flvPlayback.height;
+                flvPlayback.x = 0;
+                flvPlayback.y = 0;
+            }
+            private function init():void
+            {
+            	//flvPlayback = new FLVPlayback();
+            	
+            	videoHolder.addChild(flvPlayback);
+            	flvPlayback.stop();
+            }
+            public function stop():void
+            {
+            	flvPlayback.stop();
+            }
+            public function show():void
+            {
+            	flvPlayback.play();
+            }
+            public function play():void
+            {
+            	flvPlayback.play();
+            }
+/*             public function set url(s:String):void
+            {
+            	flvPlayback.source = s;
+            	url_ = s;
+            } */
+        ]]>
+    </mx:Script>
+	
+    <video:FLVPlayback id="flvPlayback" 
+            source="{url}"
+            scaleMode="maintainAspectRatio"            
+            skinBackgroundColor="#898989" 
+            skinAutoHide="true" autoPlay="true" 
+            autoLayout="flvPlayback_autoLayout(event);"
+     />
+            <mx:Panel>
+            	<mx:UIComponent id="videoHolder" width="320" height="240" />
+            </mx:Panel>
+        
+</mx:VBox>
